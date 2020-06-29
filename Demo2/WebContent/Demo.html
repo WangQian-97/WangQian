@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="./js/vue.js"></script>
+</head>
+<body>
+	
+		<div id="app">
+				<input type="text" v-model="num">
+				<h2>{{info}}H1909C{{num}}人</h2>
+				<button v-on:click="num++">加</button>
+				<button v-on:click="num--">减</button>
+				<br>
+				<br>
+				<button @click="add">+</button>
+				<button @click="cut">-</button>
+				姓名：<input type="text" v-model="name">
+				年龄：<input type="text" v-model="age">
+				<br>
+				<br>
+				<hr color="black" >
+				<br>
+				<form action="">
+					姓名：<input type="text" v-model="user.name">
+					年龄：<input type="text" v-model="user.age">
+				</form>
+				<br>
+				<br>
+				<hr color="black" >
+				<br>
+				<ul>
+					<li v-for="(user,index) in users">
+						{{index}}{{user.name}}:{{user.gender}}:{{user.age}}
+					</li>
+				</ul>
+		</div>
+		<script type="text/javascript">
+				var app = new Vue({
+					el:"#app",
+					data:{
+						info:"小实训",
+						num:44,
+						name:"王乾",
+						age:23,
+						user:{
+							name:"王乾",
+							age:23
+						},
+						users:[
+						       {name:'成龙',gender:'男',age:21},
+						       {name:'李连杰',gender:'男',age:22},
+						       {name:'热巴',gender:'女',age:21},
+						       {name:'金星',gender:'不男不女',age:25}
+						       ]
+					},
+					methods:{
+						add(){
+							app.age++;
+						},
+						cut:function(){
+							app.age--;
+						}
+					},
+					created(){
+						this.age=25;
+					},
+				});
+		</script> 
+		 
+   			
+   			
+   			
+</body>
+</html>

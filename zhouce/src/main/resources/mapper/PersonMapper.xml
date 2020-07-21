@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshu.dao.PersonMapper">
+  <resultMap id="BaseResultMap" type="com.xiaoshu.entity.Person">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="p_name" jdbcType="VARCHAR" property="pName" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="jointime" jdbcType="DATE" property="jointime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  			<resultMap type="person" id="findAllMap">
+  			 <id column="id" jdbcType="INTEGER" property="id" />
+		    <result column="p_name" jdbcType="VARCHAR" property="pName" />
+		    <result column="gender" jdbcType="VARCHAR" property="gender" />
+		    <result column="cid" jdbcType="INTEGER" property="cid" />
+		    <result column="jointime" jdbcType="DATE" property="jointime" />
+		  	<association property="company" javaType="company">
+		  	 <id column="cid" jdbcType="INTEGER" property="cid" />
+    		<result column="company_name" jdbcType="VARCHAR" property="companyName" />
+		  	</association>	
+  			</resultMap>
+  			
+  			<select id="findAll" parameterType="person" resultMap="findAllMap">
+  				select * from p_person p,p_company c
+  				<where>
+  					p.cid = c.cid
+  				</where>
+  				<if test="pName!=null and pName!=''">
+  				  and p.p_name like '%${pName}%'
+  				</if>
+  				<if test="cid!=null and cid!=0">
+  					and p.cid = #{cid}
+  				</if>
+  			</select>
+</mapper>

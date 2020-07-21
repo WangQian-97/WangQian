@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:命名空间,值为接口的全类路径名 -->
+<mapper namespace="com.jiyun.mapper.StudentMapper">
+	 
+	 <select id="findAll" resultType="student"  parameterType="student"> 
+	 	select s.*,b.bname from student s,banji b 
+	 	<where>
+	 			s.bid = b.bid
+	 			<if test="sname!=null and sname !=''">
+	 				  and s.sname like '%${sname}%'
+	 			</if>
+	 			<if test="bid!=0">
+					  and s.bid = #{bid}	 			
+	 			</if>
+	 			<if test="start!=null">
+	 				  and s.birthday &gt;= #{start}
+	 			</if>
+	 			<if test="end!=null">
+	 				  and s.birthday &lt;= #{end}
+	 			</if>
+	 	</where> 
+	 </select>
+	 
+	 <select id="findBanji" resultType="banji">
+	 	select * from banji
+	 </select>
+	 
+	 <insert id="add" parameterType="student">
+	 	insert into student(sname,bid,birthday) values(#{sname},#{bid},#{birthday})
+	 </insert>
+	 
+	 <update id="update" parameterType="student">
+	 	update student set sname = #{sname},bid=#{bid},birthday=#{birthday} where sid = #{sid}
+	 </update>
+	 
+	 <delete id="delAll" >
+	 	delete from student 
+	 	<where>
+	 		<foreach collection="array" item="sid" separator="or">
+	 			sid=#{sid}
+	 		</foreach>
+	 	</where>
+	 </delete>
+</mapper>

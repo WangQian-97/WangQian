@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshu.dao.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.xiaoshu.entity.Student">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="sid" jdbcType="INTEGER" property="sid" />
+    <result column="sname" jdbcType="VARCHAR" property="sname" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="hobby" jdbcType="VARCHAR" property="hobby" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="bid" jdbcType="INTEGER" property="bid" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  
+  		<resultMap type="student" id="findAllMap">
+		  	 <id column="sid" jdbcType="INTEGER" property="sid" />
+		    <result column="sname" jdbcType="VARCHAR" property="sname" />
+		    <result column="sex" jdbcType="VARCHAR" property="sex" />
+		    <result column="hobby" jdbcType="VARCHAR" property="hobby" />
+		    <result column="pic" jdbcType="VARCHAR" property="pic" />
+		    <result column="birthday" jdbcType="DATE" property="birthday" />
+		    <result column="bid" jdbcType="INTEGER" property="bid" />
+  			<association property="banji" javaType="banji">
+  			<id column="bid" jdbcType="INTEGER" property="bid" />
+   			 <result column="bname" jdbcType="VARCHAR" property="bname" />
+  			</association>
+  		</resultMap>
+   	
+   		<select id="findAll" parameterType="student" resultMap="findAllMap">
+   			select * from student s,banji b
+   			<where>
+   				s.bid  = b.bid
+   				<if test="sname!=null and sname!=''">
+   				 and s.sname like '%${sname}%'
+   				</if>
+   				<if test="bid!=null and bid!=0">
+   				and s.cid = #{cid}
+   				</if>
+   				<if test="start!=null and start!=''">
+   					and s.birthday &gt;= #{start}
+   				</if>
+   				<if test="end!=null and end!=''">
+   					and s.birthday &lt;= #{end}
+   				</if>
+   			</where>
+   		</select>
+</mapper>
